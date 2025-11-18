@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "iyffJsOK4po=",
+  "success": true,
+  "projectFilePath": "C:\\shama\\GitProjects\\book-quotes-app\\Backend\\Backend.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\frog2\\.nuget\\packages\\microsoft.aspnetcore.openapi\\9.0.11\\microsoft.aspnetcore.openapi.9.0.11.nupkg.sha512",
+    "C:\\Users\\frog2\\.nuget\\packages\\microsoft.openapi\\1.6.17\\microsoft.openapi.1.6.17.nupkg.sha512"
+  ],
+  "logs": []
+}
