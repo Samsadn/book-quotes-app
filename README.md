@@ -29,7 +29,7 @@ Full-stack assignment using *.NET 9 C# Web API, **Angular 20, **JWT auth, **Boot
 ### Backend
 
 ```bash
-cd Api
+cd Backend
 dotnet restore
 dotnet ef migrations add InitialCreate
 dotnet ef database update
