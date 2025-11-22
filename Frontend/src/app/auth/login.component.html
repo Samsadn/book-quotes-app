@@ -19,7 +19,7 @@
               placeholder="Enter username"
             />
           </div>
-          <div class="text-danger small mt-1" *ngIf="form.controls.userName.touched && form.controls.userName.invalid">
+          <div class="text-danger small mt-1" *ngIf="userNameControl.touched && userNameControl.invalid">
             Username must be at least 3 characters.
           </div>
         </div>
@@ -35,7 +35,7 @@
               placeholder="Enter password"
             />
           </div>
-          <div class="text-danger small mt-1" *ngIf="form.controls.password.touched && form.controls.password.invalid">
+          <div class="text-danger small mt-1" *ngIf="passwordControl.touched && passwordControl.invalid">
             Password must be at least 6 characters.
           </div>
         </div>

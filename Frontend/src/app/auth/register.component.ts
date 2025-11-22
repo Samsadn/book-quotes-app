@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { RegisterRequest } from '../models/auth';
@@ -15,13 +15,19 @@ export class RegisterComponent {
   errorMessage = '';
   successMessage = '';
   loading = false;
-  form = this.fb.group({
-    userName: ['', [Validators.required, Validators.minLength(3)]],
-    password: ['', [Validators.required, Validators.minLength(6)]],
-    confirmPassword: ['', [Validators.required]]
-  });
+  form: FormGroup;
 
-  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {}
+  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
+    this.form = this.buildForm();
+  }
+
+  private buildForm(): FormGroup {
+    return this.fb.group({
+      userName: ['', [Validators.required, Validators.minLength(3)]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      confirmPassword: ['', [Validators.required]]
+    });
+  }
 
   submit(): void {
     if (this.form.invalid || this.form.value.password !== this.form.value.confirmPassword) {
@@ -34,7 +40,7 @@ export class RegisterComponent {
     this.errorMessage = '';
     const payload: RegisterRequest = {
       userName: this.form.value.userName!,
-      password: this.form.value.password!
+      password: this.form.value.password!,
     };
 
     this.authService.register(payload).subscribe({

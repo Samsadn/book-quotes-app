@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../services/auth.service';
@@ -14,12 +14,26 @@ import { LoginRequest } from '../models/auth';
 export class LoginComponent {
   errorMessage = '';
   loading = false;
-  form = this.fb.group({
-    userName: ['', [Validators.required, Validators.minLength(3)]],
-    password: ['', [Validators.required, Validators.minLength(6)]]
-  });
+  form: FormGroup;
 
-  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {}
+  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
+    this.form = this.buildForm();
+  }
+
+  get userNameControl(): AbstractControl {
+    return this.form.get('userName')!;
+  }
+
+  get passwordControl(): AbstractControl {
+    return this.form.get('password')!;
+  }
+
+  private buildForm(): FormGroup {
+    return this.fb.group({
+      userName: ['', [Validators.required, Validators.minLength(3)]],
+      password: ['', [Validators.required, Validators.minLength(6)]]
+    });
+  }
 
   submit(): void {
     if (this.form.invalid) {

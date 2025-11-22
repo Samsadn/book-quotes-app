@@ -8,7 +8,6 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.Data.Sqlite;
 
 var builder = WebApplication.CreateBuilder(args);
-
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
 if (!string.IsNullOrWhiteSpace(connectionString))
@@ -26,6 +25,7 @@ else
     var dbPath = Path.Combine(builder.Environment.ContentRootPath, "bookQuotesApp.db");
     connectionString = $"Data Source={dbPath}";
 }
+Console.WriteLine($"[DEBUG] Using SQLite connection: {connectionString}");
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite(connectionString));
@@ -78,7 +78,22 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    db.Database.Migrate();
+
+    // Create database + schema if needed
+    db.Database.EnsureCreated();
+
+    // List tables
+    var conn = db.Database.GetDbConnection();
+    await conn.OpenAsync();
+    using var cmd = conn.CreateCommand();
+    cmd.CommandText = "SELECT name FROM sqlite_master WHERE type='table' ORDER BY name;";
+    using var reader = await cmd.ExecuteReaderAsync();
+    Console.WriteLine("=== TABLES IN DB ===");
+    while (await reader.ReadAsync())
+    {
+        Console.WriteLine(reader.GetString(0));
+    }
+    Console.WriteLine("====================");
 }
 
 if (app.Environment.IsDevelopment())

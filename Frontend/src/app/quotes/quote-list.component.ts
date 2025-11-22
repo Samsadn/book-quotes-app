@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, signal } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Quote } from '../models/quote';
 import { QuoteService } from '../services/quote.service';
 
@@ -16,10 +16,7 @@ export class QuoteListComponent implements OnInit {
   error = signal<string>('');
   editingId: number | null = null;
 
-  form = this.fb.group({
-    text: ['', [Validators.required, Validators.minLength(5)]],
-    author: ['', [Validators.required, Validators.minLength(2)]]
-  });
+  form: FormGroup;
 
   private readonly defaults: Quote[] = [
     { text: 'The only limit to our realization of tomorrow is our doubts of today.', author: 'Franklin D. Roosevelt' },
@@ -29,10 +26,27 @@ export class QuoteListComponent implements OnInit {
     { text: 'The future depends on what you do today.', author: 'Mahatma Gandhi' }
   ];
 
-  constructor(private fb: FormBuilder, private quoteService: QuoteService) {}
+  constructor(private fb: FormBuilder, private quoteService: QuoteService) {
+    this.form = this.buildForm();
+  }
+
+  get textControl(): AbstractControl {
+    return this.form.get('text')!;
+  }
+
+  get authorControl(): AbstractControl {
+    return this.form.get('author')!;
+  }
 
   ngOnInit(): void {
     this.loadQuotes();
+  }
+
+  private buildForm(): FormGroup {
+    return this.fb.group({
+      text: ['', [Validators.required, Validators.minLength(5)]],
+      author: ['', [Validators.required, Validators.minLength(2)]]
+    });
   }
 
   loadQuotes(): void {

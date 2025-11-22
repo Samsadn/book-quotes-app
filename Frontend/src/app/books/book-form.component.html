@@ -9,21 +9,21 @@
         <div class="col-md-6">
           <label class="form-label">Title</label>
           <input type="text" class="form-control" formControlName="title" placeholder="Book title" />
-          <div class="text-danger small" *ngIf="form.controls.title.touched && form.controls.title.invalid">
+          <div class="text-danger small" *ngIf="titleControl.touched && titleControl.invalid">
             Title is required.
           </div>
         </div>
         <div class="col-md-6">
           <label class="form-label">Author</label>
           <input type="text" class="form-control" formControlName="author" placeholder="Author name" />
-          <div class="text-danger small" *ngIf="form.controls.author.touched && form.controls.author.invalid">
+          <div class="text-danger small" *ngIf="authorControl.touched && authorControl.invalid">
             Author is required.
           </div>
         </div>
         <div class="col-md-6">
           <label class="form-label">Publication Date</label>
           <input type="date" class="form-control" formControlName="publicationDate" />
-          <div class="text-danger small" *ngIf="form.controls.publicationDate.touched && form.controls.publicationDate.invalid">
+          <div class="text-danger small" *ngIf="publicationDateControl.touched && publicationDateControl.invalid">
             Publication date is required.
           </div>
         </div>
