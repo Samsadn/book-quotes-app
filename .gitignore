@@ -1,3 +1,10 @@
 # .NET
 Backend/bin/
 Backend/obj/
+
+Backend.Tests/bin/
+Backend.Tests/obj/
+
+# Angular
+client/node_modules/
+client/dist/
