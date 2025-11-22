@@ -1,1 +1,62 @@
-/* You can add global styles to this file, and also import other style files */
+:root {
+  --body-bg: #f8f9fb;
+  --body-text: #1f2a3d;
+  --card-bg: #ffffff;
+  --card-border: #dee2e6;
+}
+
+.theme-dark {
+  --body-bg: #0f172a;
+  --body-text: #e5e7eb;
+  --card-bg: #1f2937;
+  --card-border: #334155;
+}
+
+body {
+  background-color: var(--body-bg);
+  color: var(--body-text);
+  min-height: 100vh;
+}
+
+.card,
+.list-group-item,
+.navbar,
+.btn,
+.form-control,
+.badge,
+.alert {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.card {
+  background-color: var(--card-bg);
+  border-color: var(--card-border);
+}
+
+.list-group-item {
+  background-color: var(--card-bg);
+  border-color: var(--card-border);
+}
+
+.navbar.theme-dark,
+.theme-dark .navbar {
+  background-color: #0b152b !important;
+}
+
+.btn-primary {
+  background: linear-gradient(90deg, #4f46e5, #06b6d4);
+  border: none;
+}
+
+.btn-primary:hover {
+  filter: brightness(0.95);
+}
+
+.form-control:focus {
+  box-shadow: 0 0 0 0.15rem rgba(79, 70, 229, 0.25);
+  border-color: rgba(79, 70, 229, 0.5);
+}
+
+textarea {
+  resize: vertical;
+}

@@ -1,0 +1,43 @@
+<div class="card shadow-sm">
+  <div class="card-body">
+    <h4 class="card-title mb-3">
+      <i class="fa-solid fa-book me-2"></i>{{ isEdit ? 'Edit Book' : 'Add New Book' }}
+    </h4>
+
+    <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+      <div class="row g-3">
+        <div class="col-md-6">
+          <label class="form-label">Title</label>
+          <input type="text" class="form-control" formControlName="title" placeholder="Book title" />
+          <div class="text-danger small" *ngIf="form.controls.title.touched && form.controls.title.invalid">
+            Title is required.
+          </div>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Author</label>
+          <input type="text" class="form-control" formControlName="author" placeholder="Author name" />
+          <div class="text-danger small" *ngIf="form.controls.author.touched && form.controls.author.invalid">
+            Author is required.
+          </div>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Publication Date</label>
+          <input type="date" class="form-control" formControlName="publicationDate" />
+          <div class="text-danger small" *ngIf="form.controls.publicationDate.touched && form.controls.publicationDate.invalid">
+            Publication date is required.
+          </div>
+        </div>
+      </div>
+
+      <div class="alert alert-danger mt-3" *ngIf="error">{{ error }}</div>
+
+      <div class="d-flex gap-2 mt-3">
+        <button type="submit" class="btn btn-primary" [disabled]="loading">
+          <i class="fa-regular fa-floppy-disk me-1"></i>
+          {{ loading ? 'Saving...' : 'Save' }}
+        </button>
+        <button type="button" class="btn btn-outline-secondary" [routerLink]="['/books']">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>

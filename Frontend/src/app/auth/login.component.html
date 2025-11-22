@@ -1,0 +1,57 @@
+<div class="auth-page d-flex align-items-center justify-content-center py-5">
+  <div class="card shadow-sm auth-card">
+    <div class="card-body p-4">
+      <div class="d-flex align-items-center mb-3">
+        <i class="fa-solid fa-book-open-reader fa-lg me-2 text-primary"></i>
+        <h5 class="mb-0">Welcome back</h5>
+      </div>
+      <p class="text-body-secondary mb-4">Sign in to manage your books and quotes.</p>
+
+      <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+        <div class="mb-3">
+          <label class="form-label">Username</label>
+          <div class="input-group">
+            <span class="input-group-text"><i class="fa-regular fa-user"></i></span>
+            <input
+              type="text"
+              class="form-control"
+              formControlName="userName"
+              placeholder="Enter username"
+            />
+          </div>
+          <div class="text-danger small mt-1" *ngIf="form.controls.userName.touched && form.controls.userName.invalid">
+            Username must be at least 3 characters.
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Password</label>
+          <div class="input-group">
+            <span class="input-group-text"><i class="fa-solid fa-lock"></i></span>
+            <input
+              type="password"
+              class="form-control"
+              formControlName="password"
+              placeholder="Enter password"
+            />
+          </div>
+          <div class="text-danger small mt-1" *ngIf="form.controls.password.touched && form.controls.password.invalid">
+            Password must be at least 6 characters.
+          </div>
+        </div>
+
+        <div class="alert alert-danger" *ngIf="errorMessage">{{ errorMessage }}</div>
+
+        <button type="submit" class="btn btn-primary w-100" [disabled]="loading">
+          <i class="fa-solid fa-right-to-bracket me-2"></i>
+          {{ loading ? 'Signing in...' : 'Login' }}
+        </button>
+      </form>
+
+      <div class="mt-3 text-center">
+        <span class="text-body-secondary">No account yet?</span>
+        <a routerLink="/register" class="ms-2">Register</a>
+      </div>
+    </div>
+  </div>
+</div>

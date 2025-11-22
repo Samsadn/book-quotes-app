@@ -1,0 +1,13 @@
+:host {
+  display: block;
+  min-height: 100vh;
+}
+
+.auth-page {
+  min-height: calc(100vh - 80px);
+}
+
+.auth-card {
+  max-width: 460px;
+  width: 100%;
+}
