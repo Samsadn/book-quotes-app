@@ -1,0 +1,40 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
+  <div class="container-fluid">
+    <a class="navbar-brand fw-semibold" routerLink="/books">
+      <i class="fa-solid fa-book-open-reader me-2"></i>
+      Book Quotes
+    </a>
+    <button class="navbar-toggler" type="button" (click)="toggleNav()" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" [class.show]="!isNavbarCollapsed">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a routerLink="/books" routerLinkActive="active" class="nav-link" (click)="isNavbarCollapsed = true">
+            <i class="fa-solid fa-list me-1"></i> Books
+          </a>
+        </li>
+        <li class="nav-item">
+          <a routerLink="/quotes" routerLinkActive="active" class="nav-link" (click)="isNavbarCollapsed = true">
+            <i class="fa-solid fa-quote-left me-1"></i> My Quotes
+          </a>
+        </li>
+      </ul>
+
+      <div class="d-flex align-items-center gap-2">
+        <button class="btn btn-outline-light btn-sm" type="button" (click)="themeService.toggleTheme()">
+          <i class="fa-solid" [class.fa-moon]="themeService.theme() === 'light'" [class.fa-sun]="themeService.theme() === 'dark'"></i>
+          <span class="ms-2">{{ themeService.theme() === 'light' ? 'Dark' : 'Light' }} mode</span>
+        </button>
+        <button class="btn btn-light btn-sm" type="button" (click)="logout()" routerLink="/login">
+          <i class="fa-solid fa-right-from-bracket me-1"></i> Logout
+        </button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<div class="container py-4">
+  <router-outlet></router-outlet>
+</div>
