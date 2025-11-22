@@ -5,14 +5,27 @@ using Backend.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.Data.Sqlite;
 
 var builder = WebApplication.CreateBuilder(args);
 
-//var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? "Data Source=bookQuotesApp.db";
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
-// Force SQLite DB into the project root
-var dbPath = Path.Combine(builder.Environment.ContentRootPath, "bookQuotesApp.db");
-var connectionString = $"Data Source={dbPath}";
+if (!string.IsNullOrWhiteSpace(connectionString))
+{
+    var sqliteBuilder = new SqliteConnectionStringBuilder(connectionString);
+    if (!Path.IsPathRooted(sqliteBuilder.DataSource))
+    {
+        sqliteBuilder.DataSource = Path.Combine(builder.Environment.ContentRootPath, sqliteBuilder.DataSource);
+    }
+
+    connectionString = sqliteBuilder.ToString();
+}
+else
+{
+    var dbPath = Path.Combine(builder.Environment.ContentRootPath, "bookQuotesApp.db");
+    connectionString = $"Data Source={dbPath}";
+}
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite(connectionString));
@@ -44,6 +57,18 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend", policy =>
+    {
+        policy.WithOrigins(
+                "http://localhost:4200",
+                "https://localhost:4200")
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
+
 builder.Services.AddAuthorization();
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
@@ -53,7 +78,7 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    db.Database.EnsureCreated();
+    db.Database.Migrate();
 }
 
 if (app.Environment.IsDevelopment())
@@ -62,6 +87,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors("AllowFrontend");
 
 app.UseAuthentication();
 app.UseAuthorization();

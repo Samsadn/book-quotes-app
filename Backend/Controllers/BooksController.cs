@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Backend.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/books")]
 [Authorize] // Only authenticated users (valid JWT) can access CRUD operations
 public class BooksController : ControllerBase
 {
