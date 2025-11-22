@@ -1,9 +1,17 @@
-# Book & My Quotes App
+Book & My Quotes is a full-stack sample that pairs an ASP.NET Core 9 Web API with an Angular 20 single-page application. It lets authenticated users manage personal reading lists and favorite quotes with a responsive, Bootstrap-based UI and JWT-protected CRUD endpoints.
 
-Full-stack assignment using *.NET 9 C# Web API, **Angular 20, **JWT auth, **Bootstrap, and **Font Awesome*.
+## Table of contents
+- [Requirements](#requirements)
+- [Features](#features)
+- [Architecture](#architecture)
+- [Prerequisites](#prerequisites)
+- [Backend setup (ASP.NET Core)](#backend-setup-aspnet-core)
+- [Frontend setup (Angular)](#frontend-setup-angular)
+- [Running tests](#running-tests)
+- [API quick reference](#api-quick-reference)
+- [Authentication flow](#authentication-flow)
 
-## Assignment Requirements → Implementation
-
+## Requirements
 | Requirement | Implementation |
 |------------|----------------|
 | Responsive CRUD application with token management, Angular 20 + .NET 9 C# API | Angular 20 SPA in /client, .NET 9 Web API in /Api, JWT auth and responsive Bootstrap layout |
@@ -24,13 +32,95 @@ Full-stack assignment using *.NET 9 C# Web API, **Angular 20, **JWT auth, **Boot
 | Use Bootstrap and Font Awesome | Imported bootstrap and @fortawesome/fontawesome-free in angular.json, used icons in navbar, buttons, and titles |
 | Button to switch between light and dark UX design | Theme toggle button in navbar using ThemeService, CSS for body.dark-mode |
 
-## How to run
+## Features
+- **Book management:** create, edit, and delete books; view a personalized list for the logged-in user.
+- **Quote collection:** maintain a separate list of favorite quotes with full CRUD support.
+- **User accounts with JWT:** register and log in; tokens are issued by the API and attached to every authenticated request.
+- **Responsive design:** Bootstrap layout, Font Awesome icons, and a dark/light theme toggle in the navbar.
+- **Navigation:** switch between book and quote views without leaving the SPA.
 
-### Backend
+## Architecture
+- **Backend (`Backend/`):** ASP.NET Core 9 Web API with Entity Framework Core and SQLite. Controllers expose Auth, Books, and Quotes endpoints. JWT bearer authentication is required for all book and quote operations.
+- **Frontend (`Frontend/`):** Angular 20 SPA. Services call the API, a JWT interceptor attaches the token, and components provide forms, lists, and theme toggling.
+- **Database:** SQLite file `bookQuotesApp.db` in the backend working directory. You can override the connection string in `Backend/appsettings.json` (`ConnectionStrings:DefaultConnection`).
+- **Ports:** The backend listens on `http://localhost:5099` (see `Backend/Properties/launchSettings.json`). The Angular dev server uses `http://localhost:4200` and is allowed by backend CORS configuration.
 
-```bash
-cd Backend
-dotnet restore
-dotnet ef migrations add InitialCreate
-dotnet ef database update
-dotnet run
+## Prerequisites
+- [.NET 9 SDK](https://dotnet.microsoft.com/)
+- [Node.js 20+](https://nodejs.org/) and npm (Angular CLI is installed via `npm install`)
+- Optional: SQLite tools if you want to inspect the database file.
+
+## Backend setup (ASP.NET Core)
+1. Navigate to the backend project:
+   ```bash
+   cd Backend
+   ```
+2. Install dependencies:
+   ```bash
+   dotnet restore
+   ```
+3. Configure settings as needed in `appsettings.json`:
+   - `Jwt:Key` must be a secure secret string (required).
+   - `Jwt:Issuer` and `Jwt:Audience` should match your client configuration.
+   - `ConnectionStrings:DefaultConnection` can point to a custom SQLite path; when empty, the API creates `bookQuotesApp.db` in the project directory.
+4. Create or update the database schema (uses existing migrations):
+   ```bash
+   dotnet ef database update
+   ```
+5. Run the API:
+   ```bash
+   dotnet run
+   ```
+   The service will start on `http://localhost:5099` (and `https://localhost:7068` when HTTPS is enabled) and log the SQLite path in use.
+
+## Frontend setup (Angular)
+1. Navigate to the Angular project:
+   ```bash
+   cd Frontend
+   ```
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Ensure the API base URL matches your backend port in `src/app/config/app.constants.ts` (default: `http://localhost:5099/api`).
+4. Start the dev server:
+   ```bash
+   npm start
+   ```
+   Visit `http://localhost:4200` to use the app. The Angular CLI will proxy calls directly to the configured API URL.
+
+## Running tests
+- **Backend unit tests (xUnit):**
+  ```bash
+  dotnet test Backend.Tests
+  ```
+- **Frontend unit tests (Karma/Jasmine):**
+  ```bash
+  cd Frontend
+  npm test
+  ```
+
+## API quick reference
+Base URL: `http://localhost:5099/api`
+
+**Auth**
+- `POST /auth/register` — Register a new user (`{ userName, password }`).
+- `POST /auth/login` — Authenticate and receive `{ token }`.
+
+**Books** (requires `Authorization: Bearer <token>`)
+- `GET /books` — List books for the current user.
+- `POST /books` — Create a book (`{ title, author, description }`).
+- `PUT /books/{id}` — Update a book.
+- `DELETE /books/{id}` — Delete a book.
+
+**Quotes** (requires `Authorization: Bearer <token>`)
+- `GET /quotes` — List quotes for the current user.
+- `POST /quotes` — Create a quote (`{ text, author }`).
+- `PUT /quotes/{id}` — Update a quote.
+- `DELETE /quotes/{id}` — Delete a quote.
+
+## Authentication flow
+1. **Register** a user via `/auth/register` (or use the Angular Register form).
+2. **Log in** via `/auth/login`. The API issues a JWT signed with the configured `Jwt:Key`.
+3. The Angular client stores the token in local storage and attaches it to subsequent requests via its JWT interceptor.
+4. Authenticated endpoints validate the token and authorize access to book and quote data scoped to the current user.
