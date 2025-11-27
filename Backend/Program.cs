@@ -135,11 +135,8 @@ using (var scope = app.Services.CreateScope())
     Console.WriteLine("====================");
 }
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 
