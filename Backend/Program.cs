@@ -64,7 +64,9 @@ builder.Services.AddCors(options =>
     {
         policy.WithOrigins(
                 "http://localhost:4200",
-                "https://localhost:4200")
+                "https://localhost:4200",
+                "https://book-quotes-app.netlify.app",
+                "https://book-quotes-app-nqp6.onrender.com")
               .AllowAnyHeader()
               .AllowAnyMethod();
     });
