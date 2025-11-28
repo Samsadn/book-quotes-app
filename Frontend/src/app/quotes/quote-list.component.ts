@@ -19,11 +19,7 @@ export class QuoteListComponent implements OnInit {
   form: FormGroup;
 
   private readonly defaults: Quote[] = [
-    { text: 'The only limit to our realization of tomorrow is our doubts of today.', author: 'Franklin D. Roosevelt' },
-    { text: 'Not all those who wander are lost.', author: 'J.R.R. Tolkien' },
-    { text: 'Simplicity is the soul of efficiency.', author: 'Austin Freeman' },
-    { text: 'We are what we repeatedly do. Excellence, then, is not an act, but a habit.', author: 'Will Durant' },
-    { text: 'The future depends on what you do today.', author: 'Mahatma Gandhi' }
+  
   ];
 
   constructor(private fb: FormBuilder, private quoteService: QuoteService) {
