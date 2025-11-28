@@ -3,6 +3,7 @@
   --body-text: #1f2a3d;
   --card-bg: #ffffff;
   --card-border: #dee2e6;
+  --muted-text: #6c757d;
 }
 
 .theme-dark {
@@ -10,6 +11,7 @@
   --body-text: #e5e7eb;
   --card-bg: #1f2937;
   --card-border: #334155;
+  --muted-text: #cbd5e1;
 }
 
 body {
@@ -31,11 +33,17 @@ body {
 .card {
   background-color: var(--card-bg);
   border-color: var(--card-border);
+  color: var(--body-text);
 }
 
 .list-group-item {
   background-color: var(--card-bg);
   border-color: var(--card-border);
+    color: var(--body-text);
+}
+
+.text-body-secondary {
+  color: var(--muted-text) !important;
 }
 
 .navbar.theme-dark,
