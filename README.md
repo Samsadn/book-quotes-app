@@ -73,6 +73,11 @@ Book & My Quotes is a full-stack sample that pairs an ASP.NET Core 9 Web API wit
    ```
    The service will start on `http://localhost:5099` (and `https://localhost:7068` when HTTPS is enabled) and log the SQLite path in use.
 
+6. Explore the interactive API docs (development profile):
+   - Swagger UI: `http://localhost:5099/swagger`
+   - OpenAPI JSON: `http://localhost:5099/swagger/v1/swagger.json`
+   These endpoints are enabled by default in development to let you try requests and verify schemas before wiring up the Angular client.
+
 ## Frontend setup (Angular)
 1. Navigate to the Angular project:
    ```bash
@@ -90,15 +95,22 @@ Book & My Quotes is a full-stack sample that pairs an ASP.NET Core 9 Web API wit
    Visit `http://localhost:4200` to use the app. The Angular CLI will proxy calls directly to the configured API URL.
 
 ## Running tests
-- **Backend unit tests (xUnit):**
+- **Backend unit tests (xUnit):** Located in `Backend.Tests/`, covering controllers, services, and JWT utilities. Run from the repo root or the Backend.Tests folder:
   ```bash
   dotnet test Backend.Tests
   ```
-- **Frontend unit tests (Karma/Jasmine):**
+- **Frontend unit tests (Karma/Jasmine):** Located alongside Angular components and services under `Frontend/src/app`. From the repo root, run:
   ```bash
   cd Frontend
   npm test
   ```
+
+## Continuous integration (GitHub Actions)
+- Workflow: `.github/workflows/ci.yml` runs on pushes and pull requests targeting `main`.
+- Backend: Restores .NET 9 SDK dependencies, builds the solution in Release mode, and runs `dotnet test`.
+- Frontend: Installs Node.js 20, installs dependencies via `npm ci`, runs `npm test -- --watch=false --browsers=ChromeHeadless`,
+  and builds the Angular app for production.
+- Artifacts: The workflow currently runs verification only; no build artifacts are published.
 
 ## API quick reference
 Base URL: `http://localhost:5099/api`
