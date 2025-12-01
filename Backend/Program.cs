@@ -66,7 +66,7 @@ builder.Services.AddCors(options =>
                 "http://localhost:4200",
                 "https://localhost:4200",
                 "https://book-quotes-app.netlify.app",
-                https://book-quotes-app-nqp6.onrender.com)
+                "https://book-quotes-app-nqp6.onrender.com")
               .AllowAnyHeader()
               .AllowAnyMethod()
               .AllowCredentials();
