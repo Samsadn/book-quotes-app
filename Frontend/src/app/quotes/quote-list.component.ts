@@ -19,7 +19,11 @@ export class QuoteListComponent implements OnInit {
   form: FormGroup;
 
   private readonly defaults: Quote[] = [
-  
+    { text: 'The secret of getting ahead is getting started.', author: 'Mark Twain' },
+    { text: 'Not all those who wander are lost.', author: 'J.R.R. Tolkien' },
+    { text: 'Simplicity is the soul of efficiency.', author: 'Austin Freeman' },
+    { text: 'Dream big and dare to fail.', author: 'Norman Vaughan' },
+    { text: 'The future depends on what you do today.', author: 'Mahatma Gandhi' }
   ];
 
   constructor(private fb: FormBuilder, private quoteService: QuoteService) {
